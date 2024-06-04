@@ -1,116 +1,123 @@
-
 import mongoose from "mongoose";
 import express from "express";
-import pkg from 'body-parser';  
-const {bodyParser} = pkg;
-import { title } from "process";
-import { Com } from "./models/company.js"; 
-import { Feed } from "./models/company.js"; 
-// let conn = await mongoose.connect("mongodb://localhost:27017/Com")  mongodb+srv://sourabhchhipa28:eiVF2Wo1URZc98aN@cluster0.cmwiy6u.mongodb.net/
+import session from "express-session";
+import MongoStore from "connect-mongo";
 import dotenv from 'dotenv';
 
 dotenv.config();
 
+let conn = await mongoose.connect(process.env.DB_URL);
 
-let conn = await mongoose.connect(process.env.DB_URL) 
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: process.env.DB_URL,
+        collectionName: 'sessions'
+    }),
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
+}));
+
+import { Com } from "./models/company.js";
+import { Feed } from "./models/company.js";
 import { authMiddleware } from './models/authMiddleware.js';
 
+// Middleware to check if user is logged in
+const checkAuth = (req, res, next) => {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+};
 
-const app = express()  
-const port = process.env.PORT || 3000;
-app.set('view engine', 'ejs') ;
-app.use(express.static('public'));
-// Middleware to parse incoming requests
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());   
+app.get('/wordproblem', async (req, res) => {
+    res.render('wordproblem');
+});
 
-app.get('/wordproblem',async (req,res)=>{
-    res.render('wordproblem') 
-})
-// Index route
 app.get('/login', async (req, res) => {
-    // await Com.deleteMany({}) 
-    res.render('index', { foo: 'Foo' }); 
-});  
-app.get('/gemeplay',async(req,res)=>{
-    res.render('gemeplay')
-}) 
-app.get('/learning',async(req,res)=>{
+    res.render('index', { foo: 'Foo' });
+});
 
-    res.render('learning')
-}) 
+app.get('/gemeplay', async (req, res) => {
+    res.render('gemeplay');
+});
 
-// Registration route
-app.get('/register', async(req,res)=>{
-    res.render('register') 
-})
-  
-// forgot password route
-app.get('/forgot',async(req,res)=>{
+app.get('/learning', async (req, res) => {
+    res.render('learning');
+});
 
-    res.render('forgot')
-})
-app.post('/feedsubmit',async(req,res)=>{
-    try { 
-        const { username,email, feedbackTextArea } = req.body;
+app.get('/register', async (req, res) => {
+    res.render('register');
+});
 
-        // Check if the user already exists
+app.get('/forgot', async (req, res) => {
+    res.render('forgot');
+});
+
+app.post('/feedsubmit', async (req, res) => {
+    try {
+        const { username, email, feedbackTextArea } = req.body;
+
         const existingUser = await Com.findOne({ name: username });
         if (existingUser) {
-            // Create a new Feedback
-            const newUser = new Feed({ name: username,email:email, text: feedbackTextArea });
-        await newUser.save();
-        res.send('Your feedback has been submitted successfully')
+            const newUser = new Feed({ name: username, email: email, text: feedbackTextArea });
+            await newUser.save();
+            res.send('Your feedback has been submitted successfully');
+        } else {
+            res.send('Enter a valid Registered username');
         }
-        else{
-            res.send('Enter a valid Registered username')
-        }
- 
-        
-        
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).send('Error registering user');
     }
-    
-})  
-// Registration requests handling
-app.post('/register', async (req, res) => { 
-    try { 
-        const { username,email, password } = req.body;
+});
 
-        // Check if the user already exists
+app.post('/register', async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
+
         const existingUser = await Com.findOne({ name: username });
         if (existingUser) {
             return res.status(400).send('User already exists');
         }
- 
-        // Create a new user
-        const newUser = new Com({ name: username,email:email, password: password });
+
+        const newUser = new Com({ name: username, email: email, password: password });
         await newUser.save();
-        
+
         res.render('gemeplay');
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).send('Error registering user');
     }
-});  
-
-app.get('/',async (req,res)=>{ 
-    res.render('landingpage')  
-})
-app.get('/index',async(req,res)=>{
-    res.render('index') 
-})
-app.get('/profile', async (req, res) => {
-    try {
-        // Retrieve user data from the database using the authenticated user's ID
-      res.render('profile')
-    }catch{}
-      
 });
 
-// List of valid game names
+app.get('/', async (req, res) => {
+    res.render('landingpage');
+});
+
+app.get('/index', async (req, res) => {
+    res.render('index');
+});
+
+app.get('/profile', checkAuth, async (req, res) => {
+    try {
+        res.render('profile', { user: req.session.user });
+    } catch (error) {
+        console.error('Error retrieving profile:', error);
+        res.status(500).send('Error retrieving profile');
+    }
+});
+
 const validGames = [
     'flappybird',
     'tictactoc',
@@ -121,8 +128,7 @@ const validGames = [
     'tellme'
 ];
 
-// Middleware to check if the requested game is valid
-app.get('/:game', async (req, res) => {
+app.get('/:game', checkAuth, async (req, res) => {
     const game = req.params.game;
     if (validGames.includes(game)) {
         res.render(game);
@@ -130,54 +136,35 @@ app.get('/:game', async (req, res) => {
         res.status(404).send('Game not found');
     }
 });
-/*
-    Games URL
-    */
-    // app.get('/flappybird',async (req,res)=>{
-    //     res.render('flappybird') 
-    // })
-    // app.get('/tictactoc',async (req,res)=>{
-    //     res.render('tictactoc')   
-    // })
-    // app.get('/luck_and_skill',async (req,res)=>{
-    //     res.render('luck_and_skill') 
-    // })
-    // app.get('/Rock_Paper_Scissors',async (req,res)=>{
-    //     res.render('RockPaperScissors') 
-    // })
-    // app.get('/wordproblem',async (req,res)=>{
-    //     res.render('wordproblem') 
-    // })  
-    // app.get('/pong',async (req,res)=>{
-    //     res.render('pong') 
-    // })
-    // app.get('/tellme',async(req,res)=>{ 
-    //     res.render('tellme')  
-    // }) 
-// Login request handling
+
 app.post('/logins', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Find user by username and password
         const user = await Com.findOne({ name: username, password: password });
         if (!user) {
             return res.status(404).send('User not found');
-        }    
+        }
 
-        res.render('gemeplay'); 
+        req.session.user = user;
+        res.render('gemeplay');
     } catch (error) {
-        console.error('Error logging in:', error);  
-        res.status(500).send('Error logging in'); 
-    } 
-});  
+        console.error('Error logging in:', error);
+        res.status(500).send('Error logging in');
+    }
+});
 
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).send('Error logging out');
+        }
+        res.redirect('/login');
+    });
+});
 
-
-// Get all users route
-app.get('/users', async (req, res) => { 
+app.get('/users', async (req, res) => {
     try {
-        // Find all users in the database
         const users = await Com.find({});
         let response = '';
         users.forEach(user => {
@@ -193,111 +180,23 @@ app.get('/users', async (req, res) => {
 
 app.post('/forgot', async (req, res) => {
     try {
-      const { email, newPassword } = req.body;
-  
-      // Find user by email
-      const user = await Com.findOne({ email });
-      if (!user) {
-        return res.status(404).send('User not found');
-      }
-  
-      // Update user's password
-      user.password = newPassword;
-      await user.save();
-  
-      res.send('Password updated successfully');
-    } catch (error) {
-      console.error('Error updating password:', error);
-      res.status(500).send('Error updating password');
-    }
-  }); 
+        const { email, newPassword } = req.body;
 
- 
+        const user = await Com.findOne({ email });
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        res.send('Password updated successfully');
+    } catch (error) {
+        console.error('Error updating password:', error);
+        res.status(500).send('Error updating password');
+    }
+});
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
-}); 
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // import mongoose from "mongoose";
-// // import express from "express";
-// // import pkg from 'body-parser';
-// // const {bodyParser} = pkg;
-// // import { title } from "process";
-// // import { Com } from "./models/company.js";
-// // let conn = await mongoose.connect("mongodb://localhost:27017/Com")
-
-// // const app = express()
-// // const port = 3000
-// // app.set('view engine', 'ejs') ;
-
-// // // const getrandom = (arr)=>{
-// // //     let r = Math.floor(Math.random() * 4);
-// // //     return arr[r];
-// // // }
-// // app.use(express.urlencoded({ extended: false }));
-
-// // // Parse application/json
-// // app.use(express.json());  
-
-// // app.post('/login',async (req, res) => {
-
-// //     // await Com.deleteMany({})
-
-// //         const username = req.body.username;
-// //         const password = req.body.password;
-// //         const todo = new Com({ name: username , password: password})
-// //         todo.save()
-// //         res.send('Form Submitted');
-  
-// // })
-
-
-// // app.get('/users', async (req, res) => {
-// //     try {
-// //         // Find all users in the database
-// //         const users = await Com.find({});
-// //         let response = ' ';
-// //         users.forEach(user => {
-// //             response += ` Name: ${user.name}, Password: ${user.password} | `;
-// //         });
-// //         console.log('Users retrieved successfully:', users);
-// //         res.send(response);
-// //     } catch (err) {
-// //         console.error('Error retrieving users:', err);
-// //         res.status(500).send('Error retrieving users');
-// //     }
-// // });
-
-
-// // app.get('/', async (req, res) => {
-
-// //     res.render('index', { foo: 'Foo' })
-// // })
-
-
-
-// // app.listen(port, () => {
-// //     console.log(`Example app listening on port ${port}`)
-// // })
+});
