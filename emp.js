@@ -6,12 +6,18 @@ const {bodyParser} = pkg;
 import { title } from "process";
 import { Com } from "./models/company.js"; 
 import { Feed } from "./models/company.js"; 
-let conn = await mongoose.connect("mongodb://localhost:27017/Com") 
+// let conn = await mongoose.connect("mongodb://localhost:27017/Com")  mongodb+srv://sourabhchhipa28:eiVF2Wo1URZc98aN@cluster0.cmwiy6u.mongodb.net/
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+
+let conn = await mongoose.connect(process.env.DB_URL) 
 import { authMiddleware } from './models/authMiddleware.js';
 
 
 const app = express()  
-const port = 3000
+const port = process.env.PORT || 3000;
 app.set('view engine', 'ejs') ;
 app.use(express.static('public'));
 // Middleware to parse incoming requests
