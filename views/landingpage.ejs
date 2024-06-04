@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="shortcut icon" type="image/png" href="img/favicon-32x32.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SUKUN GAMING WEB</title>
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  
+  <!-- Internal CSS -->
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0c0c0c;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+    
+    /* Navigation */
+    .navbar {
+      background-color: #000;
+    }
+    
+    .navbar-brand {
+      font-size: 24px;
+    }
+    
+    .navbar-nav .nav-link {
+      color: #fff;
+    }
+    
+    .navbar-nav .nav-link:hover {
+      color: #999;
+    }
+    
+    /* Header */
+    header {
+      background-image: url('/jose-gil-2pNdTBn4C7U-unsplash.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .intro-text {
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  padding: 100px 0; /* Adjust padding as needed */
+  color: white;
+    }
+    
+    .intro-heading {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    
+    /* About Section */
+    #about {
+      background-color: #1a1a1a;
+      padding: 80px 0;
+    }
+    
+    .service-heading {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+    
+    /* Team Section */
+    #team {
+      background-color: #333333;
+      padding: 80px 0;
+    }
+    
+    .team-member {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .team-text {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    /* Feedback and Contact Section */
+    #contact {
+      background-color: #0c0c0c;
+      padding: 80px 0;
+    }
+    
+    .contact-heading {
+      font-size: 36px;
+      margin-bottom: 50px;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: #000;
+      color: #999;
+      padding: 50px 0;
+    }
+    
+    .footer-heading {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .footer-link {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .register-link {
+    color: #fff; /* Text color */
+    font-weight: bold; /* Bold font */
+}
+
+.register-link:hover {
+    color: #aaa; /* Text color on hover */
+    text-decoration: none; /* Remove underline on hover */
+}
+/* Styling for "Login" link */
+.login-link {
+    color: #fff;
+    font-weight: bold;
+}
+
+.login-link:hover {
+    color: #ffc107; /* Change color on hover */
+    text-decoration: none;
+}
+
+/* Styling for "Register" link */
+.register-link {
+    color: #ffc107; /* Yellow color for Register link */
+    font-weight: bold;
+}
+
+.register-link:hover {
+    color: #ffa000; /* Darker yellow color on hover */
+    text-decoration: none;
+}
+
+
+  </style>
+</head>
+
+<body id="page-top" class="index">
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="#page-top">SUKUN GAMING WEB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#team">Team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Feedback</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/learning">Learning</a>
+                </li>
+                <!-- Styled "Login" and "Register" links -->
+                <li class="nav-item">
+                    <a class="nav-link login-link" href="/index">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link register-link" href="/register">Register</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+  <!-- Header -->
+  <header>
+    <div class="intro-text">
+      <h1 class="intro-heading">KINGDOM OF GAMING</h1>
+      <a href="/tellme" class="btn btn-primary btn-xl">Tell Me More</a>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="section-heading">About</h2>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-6">
+          <span class="fa-stack fa-4x">
+            <i class="fas fa-gamepad fa-stack-1x"></i>
+          </span>
+          <h4 class="service-heading">Daily Games</h4>
+          <p class="text-muted">We daily organize different games on Discord at 10PM (IST).</p>
+        </div>
+        <div class="col-md-6">
+          <span class="fa-stack fa-4x">
+            <i class="fas fa-trophy fa-stack-1x"></i>
+          </span>
+          <h4 class="service-heading">Weekly Tournaments</h4>
+          <p class="text-muted">We organize weekly tournaments of different games in which you can win Amazing Prizes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section id="team">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="section-heading">Developer Team</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="team-member">
+            <h4 class="team-text">Pankaj Kumawat</h4>
+            <p class="text-muted">Student, UEM Jaipur<br><strong>(Frontend Developer)</strong></p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="team-member">
+            <h4 class="team-text">Abhishek Swaranker</h4>
+            <p class="text-muted">Student, UEM Jaipur<br><strong>(Backend Developer)</strong></p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="team-member">
+            <h4 class="team-text">Sourabh Chhipa</h4>
+            <p class="text-muted">Student, UEM Jaipur<br><strong>(Frontend Developer)</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feedback and Contact Section -->
+  <section id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="contact-heading">Connect with Us</h2>
+          <p>We would love to respond to your questions and make our website more user-friendly.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <form action="/feedsubmit" method="post">
+            <h2 class="text-center">Feedback Form</h2>
+            <input required type="text" id="username" name="username" placeholder="Name" class="form-control mb-3">
+            <input required type="email" id="email" placeholder="Email" class="form-control mb-3">
+            <textarea required id="feedbackTextArea" name="feedbackTextArea" placeholder="Write your feedback message about your experience on this website."
+              class="form-control mb-3" rows="5"></textarea>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <h2 class="text-center">Reach Us</h2>
+          <p>Country: India</p>
+          <p>Email: sourabh12Chippa@gmail.com</p>
+          <p>Phone No.: 99862155890</p>
+          <p>Email: sokival_pankaj12@gmail.com</p>
+          <p>Phone No.: 8865235698</p>
+          <p>Email: swarnkara_abhishek_12@gmail.com</p>
+          <p>Phone No.: 8000035777</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="footer-heading">Sukoon Company</h2>
+          <p>Sukoon is a gaming website where you can play online multiple games.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <h6 class="text-uppercase mb-4">Products</h6>
+          <ul class="list-unstyled">
+            <li><a href="#!" class="footer-link">Flappy Bird</a></li>
+            <li><a href="#!" class="footer-link">Luck and Strategy</a></li>
+            <li><a href="#!" class="footer-link">Pong</a></li>
+            <li><a href="#!" class="footer-link">Others</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6 class="text-uppercase mb-4">Useful Links</h6>
+          <ul class="list-unstyled">
+            <li><a href="#!" class="footer-link">Pricing</a></li>
+            <li><a href="#!" class="footer-link">Settings</a></li>
+            <li><a href="#!" class="footer-link">Orders</a></li>
+            <li><a href="#!" class="footer-link">Help</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6 class="text-uppercase mb-4">Contact</h6>
+          <p><i class="fas fa-home mr-3"></i>India, NY 10012, US</p>
+          <p><i class="fas fa-envelope mr-3"></i>abhishek@example.com</p>
+          <p><i class="fas fa-phone mr-3"></i>+91 9571001714</p>
+          <p><i class="fas fa-print mr-3"></i>+91 8856989898</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- External Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
