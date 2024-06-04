@@ -198,6 +198,5 @@ app.post('/forgot', async (req, res) => {
 });
 
 app.listen(port, () => {
-}); 
 });
  
