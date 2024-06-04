@@ -6,7 +6,7 @@ const {bodyParser} = pkg;
 import { title } from "process";
 import { Com } from "./models/company.js"; 
 import { Feed } from "./models/company.js"; 
-// let conn = await mongoose.connect("mongodb://localhost:27017/Com")  mongodb+srv://sourabhchhipa28:eiVF2Wo1URZc98aN@cluster0.cmwiy6u.mongodb.net/
+// let conn = await mongoose.connect("mongodb://localhost:27017/Com") /
 import dotenv from 'dotenv';
 
 dotenv.config();
